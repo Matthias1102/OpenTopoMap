@@ -6,7 +6,7 @@ using OpenTopoMap styles.
 ## Required tools & OpenTopoMap repository
 
 ```bash
-git clone https://github.com/der-stefan/OpenTopoMap.git
+git clone https://github.com/Matthias1102/OpenTopoMap.git
 cd OpenTopoMap/garmin
 ```
 
@@ -14,8 +14,8 @@ Download [mkgmap](http://www.mkgmap.org.uk/download/mkgmap.html),
 [splitter](http://www.mkgmap.org.uk/download/splitter.html) & bounds
 
 ```bash
-MKGMAP="mkgmap-r4136" # adjust to latest version (see www.mkgmap.org.uk)
-SPLITTER="splitter-r591"
+MKGMAP="mkgmap-r4919" # adjust to latest version (see www.mkgmap.org.uk)
+SPLITTER="splitter-r654"
 
 mkdir tools
 pushd tools > /dev/null
@@ -34,12 +34,17 @@ SPLITTERJAR="$(pwd)/${SPLITTER}/splitter.jar"
 
 popd > /dev/null
 
+# The following lines consider that boundary and sea files are provided
+# as described on https://www.mkgmap.org.uk/download/mkgmap.html
+
 if stat --printf='' bounds/bounds_*.bnd 2> /dev/null; then
     echo "bounds already downloaded"
 else
     echo "downloading bounds"
     rm -f bounds.zip  # just in case
-    wget "http://osm2.pleiades.uni-wuppertal.de/bounds/latest/bounds.zip"
+    #wget "http://osm2.pleiades.uni-wuppertal.de/bounds/latest/bounds.zip"
+    wget "http://osm.thkukuk.de/data/bounds-latest.zip"
+    mv bounds-latest.zip bounds.zip
     unzip "bounds.zip" -d bounds
 fi
 
@@ -50,7 +55,9 @@ if stat --printf='' sea/sea_*.pbf 2> /dev/null; then
 else
     echo "downloading sea"
     rm -f sea.zip  # just in case
-    wget "http://osm2.pleiades.uni-wuppertal.de/sea/latest/sea.zip"
+    #wget "http://osm2.pleiades.uni-wuppertal.de/sea/latest/sea.zip"
+    wget "https://www.thkukuk.de/osm/data/sea-latest.zip"
+    mv sea-latest.zip sea.zip
     unzip "sea.zip" -d sea
 fi
 
