@@ -13,6 +13,10 @@ cd OpenTopoMap/garmin
 Download [mkgmap](http://www.mkgmap.org.uk/download/mkgmap.html),
 [splitter](http://www.mkgmap.org.uk/download/splitter.html) & bounds
 
+Boundary and sea files are no longer provided by
+http://osm2.pleiades.uni-wuppertal.de. Instead, we use the URLs
+given by https://www.mkgmap.org.uk/download/mkgmap.html.
+
 ```bash
 MKGMAP="mkgmap-r4919" # adjust to latest version (see www.mkgmap.org.uk)
 SPLITTER="splitter-r654"
@@ -34,17 +38,13 @@ SPLITTERJAR="$(pwd)/${SPLITTER}/splitter.jar"
 
 popd > /dev/null
 
-# The following lines consider that boundary and sea files are provided
-# as described on https://www.mkgmap.org.uk/download/mkgmap.html
-
 if stat --printf='' bounds/bounds_*.bnd 2> /dev/null; then
     echo "bounds already downloaded"
 else
     echo "downloading bounds"
     rm -f bounds.zip  # just in case
     #wget "http://osm2.pleiades.uni-wuppertal.de/bounds/latest/bounds.zip"
-    wget "http://osm.thkukuk.de/data/bounds-latest.zip"
-    mv bounds-latest.zip bounds.zip
+    wget -O bounds.zip "http://osm.thkukuk.de/data/bounds-latest.zip"
     unzip "bounds.zip" -d bounds
 fi
 
@@ -56,8 +56,7 @@ else
     echo "downloading sea"
     rm -f sea.zip  # just in case
     #wget "http://osm2.pleiades.uni-wuppertal.de/sea/latest/sea.zip"
-    wget "https://www.thkukuk.de/osm/data/sea-latest.zip"
-    mv sea-latest.zip sea.zip
+    wget -O sea.zip "https://www.thkukuk.de/osm/data/sea-latest.zip"
     unzip "sea.zip" -d sea
 fi
 
