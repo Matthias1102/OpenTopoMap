@@ -57,7 +57,7 @@ else
     rm -f sea.zip  # just in case
     #wget "http://osm2.pleiades.uni-wuppertal.de/sea/latest/sea.zip"
     wget -O sea.zip "https://www.thkukuk.de/osm/data/sea-latest.zip"
-    unzip "sea.zip" -d sea
+    unzip "sea.zip"
 fi
 
 SEA="$(pwd)/sea"
@@ -72,7 +72,7 @@ pushd data > /dev/null
 rm -f morocco-latest.osm.pbf
 wget "https://download.geofabrik.de/africa/morocco-latest.osm.pbf"
 
-rm -f 6324*.pbf
+rm -f 6324*.pbf areas.* densities-out.txt template.args
 java -jar $SPLITTERJAR --precomp-sea=$SEA "$(pwd)/morocco-latest.osm.pbf"
 DATA="$(pwd)/6324*.pbf"
 
@@ -83,8 +83,8 @@ STYLEFILE="$(pwd)/style/opentopomap"
 
 pushd style/typ > /dev/null
 
-java -jar $MKGMAPJAR --family-id=35 OpenTopoMap.txt
-TYPFILE="$(pwd)/OpenTopoMap.typ"
+java -jar $MKGMAPJAR --family-id=35 opentopomap.txt
+TYPFILE="$(pwd)/opentopomap.typ"
 
 popd > /dev/null
 
