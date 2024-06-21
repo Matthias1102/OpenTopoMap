@@ -36,7 +36,7 @@ route
 make-opposite-cycleways
 add-pois-to-areas
 add-pois-to-lines
-report-roundabout-issues
+#report-roundabout-issues
 link-pois-to-ways
 process-destination
 process-exits
