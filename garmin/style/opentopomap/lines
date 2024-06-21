@@ -186,12 +186,35 @@ natural=coastline [0x15 resolution 12]
 power=line {delete name} [0x29 resolution 21]
 power=minor_line {delete name} [0x29 resolution 24]
 
+
+# Museumsbahn (wie Eisenbahn).
+railway = preserved {set railway = rail}
+
+# Schmalspurbahn (wie Eisenbahn).
+railway = narrow_gauge {set railway = rail}
+
+# Standseilbahn (Funicular) (wie Eisenbahn).
+railway = funicular {set railway = rail}
+
+
 #railway=abandoned [0x0a road_class=0 road_speed=1 resolution 22]
 railway=platform [0x16 road_class=0 road_speed=0 resolution 23]
 (railway=rail | railway=disused | railway=light_rail | railway=monorail | railway=narrow_gauge | railway=subway) & tunnel!=yes [0x2d resolution 19-23 continue]
 (railway=rail | railway=disused | railway=light_rail | railway=monorail | railway=narrow_gauge | railway=subway) & tunnel=yes [0x2e resolution 19-23 continue]
 (railway=rail | railway=disused | railway=light_rail | railway=monorail | railway=narrow_gauge | railway=subway) & tunnel=yes [0x2c resolution 24]
 (railway=rail | railway=disused | railway=light_rail | railway=monorail | railway=narrow_gauge | railway=subway) [0x14 resolution 24]
+
+# cable_car: Eine Pendelbahn bestehend aus 2 grossen Kabinen die gegenlaeufig auf und ab fahren.
+# gondola: Eine Gondelbahn bestehend aus vielen Kabinen die im Kreis auf und ab fahren.
+# mixed_lift: A mixed lift, containing both gondolas and chairs.
+aerialway = cable_car | aerialway = gondola | aerialway = mixed_lift [0x2d resolution 20-24]
+
+# chair_lift: Ein Sessellift
+# drag_lift: Ein Schlepplift fuer Skifahrer.
+# t-bar: Ein T-foermiger Schlepplift fuer Skifahrer.
+# j-bar: A type of aerialway=drag_lift. Like t-bar but just on one side.
+# platter: Tellerlift
+aerialway = chair_lift | aerialway = drag_lift | aerialway=t-bar | aerialway=j-bar | aerialway=platter [0x2d resolution 20-24]
 
 (man_made=cable|(man_made=* & man_made ~ '.*pipe.*')) & area!=yes &
 tunnel!=yes & location != underground
