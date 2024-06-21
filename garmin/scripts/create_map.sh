@@ -21,13 +21,23 @@ MAPID=$2
 
 if [ -z "${REGIONURL}" ]; then
    echo "REGIONURL not defined"
-   exit
+   exit 1
 fi
 
 if [ -z "${MAPID}" ]; then
    echo "MAPID not defined"
-   exit
+   exit 1
 fi
+
+re='^[0-9][0-9][0-9][0-9]$'
+if ! [[ $MAPID =~ $re ]] ; then
+   echo "MAPID must be a four-digit number"
+   exit 1
+fi
+
+REGION=$(echo ${REGIONURL} | sed 's#.*/##g' | sed 's#\.osm\.pbf##g')
+
+echo "########## Creating map for region ${REGION} ##########"
 
 # Go to the OpenTopoMap/garmin folder
 cd $(dirname "$0")/..
@@ -92,9 +102,6 @@ SEA="$(pwd)/sea"
 mkdir -p data
 pushd data > /dev/null
 
-REGION=$(echo ${REGIONURL} | sed 's#.*/##g' | sed 's#\.osm\.pbf##g')
-echo $REGION
-
 if stat --printf='' ${REGION}.osm.pbf 2> /dev/null; then
     echo "${REGION}.osm.pbf already downloaded"
 else
@@ -102,7 +109,7 @@ else
     wget ${REGIONURL}
 fi
 
-echo "Running ${SPLITTERJAR}..."
+echo "##### Running ${SPLITTERJAR}... #####"
 rm -f ${MAPID}*.pbf areas.* densities-out.txt template.args
 java -Xmx8192M -jar $SPLITTERJAR --precomp-sea=$SEA  --mapid=${MAPID}0001 "$(pwd)/${REGION}.osm.pbf"
 DATA="$(pwd)/${MAPID}*.pbf"
@@ -114,13 +121,13 @@ STYLEFILE="$(pwd)/style/opentopomap"
 
 pushd style/typ > /dev/null
 
-echo "Generating opentopomap.typ..."
+echo "##### Generating opentopomap.typ... #####"
 java -jar $MKGMAPJAR --family-id=35 opentopomap.txt
 TYPFILE="$(pwd)/opentopomap.typ"
 
 popd > /dev/null
 
-echo "Running ${MKGMAPJAR}..."
+echo "##### Running ${MKGMAPJAR}... #####"
 rm -rf ./output_tmp
 java -Xmx8192M -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
     --precomp-sea=$SEA \
