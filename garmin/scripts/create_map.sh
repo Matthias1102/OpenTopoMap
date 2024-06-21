@@ -104,7 +104,7 @@ fi
 
 echo "Running ${SPLITTERJAR}..."
 rm -f ${MAPID}*.pbf areas.* densities-out.txt template.args
-java -jar $SPLITTERJAR --precomp-sea=$SEA  --mapid=${MAPID}0001 "$(pwd)/${REGION}.osm.pbf"
+java -Xmx8192M -jar $SPLITTERJAR --precomp-sea=$SEA  --mapid=${MAPID}0001 "$(pwd)/${REGION}.osm.pbf"
 DATA="$(pwd)/${MAPID}*.pbf"
 
 popd > /dev/null
@@ -122,8 +122,9 @@ popd > /dev/null
 
 echo "Running ${MKGMAPJAR}..."
 rm -rf ./output_tmp
-java -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
+java -Xmx8192M -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
     --precomp-sea=$SEA \
+    --dem=./dem1/all \
     --output-dir=output_tmp --bounds=$BOUNDS $DATA $TYPFILE
 
 echo "Generated map will be saved as output/otm-${REGION}.img"
