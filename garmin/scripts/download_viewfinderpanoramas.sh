@@ -18,9 +18,9 @@
 # resolution can be found at
 # https://viewfinderpanoramas.org/Coverage%20map%20viewfinderpanoramas_org1.htm
 
-cd $(dirname "$0")/..
+cd $(dirname "$0")/.. || { echo "cd command failed"; exit 1; }
 mkdir -p dem1
-cd dem1
+cd dem1 || { echo "cd command failed"; exit 1; }
 
 for a in \
 J29 J30 J31 J32 J33 \
