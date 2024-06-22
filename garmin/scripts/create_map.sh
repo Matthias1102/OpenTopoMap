@@ -44,10 +44,19 @@ cd $(dirname $0) || { echo "cd command failed"; exit 1; }
 source setup_vars.bash
 
 #
+# Check whether files with height information have been downloaded.
+#
+if [[ "$(ls ../dem1/all/*.hgt | wc -l)" -ne 1048 ]]; then
+    echo "Files with height information are missing. Please run this command first:"
+    echo "./download_viewfinderpanoramas.sh"
+    exit 1
+fi
+
+#
 # Download required tools
 #
 echo -e "\n##### Download required tools #####"
-./download_tools.sh
+./download_tools.sh || exit 1
 
 # Go to the OpenTopoMap/garmin folder.
 cd .. || { echo "cd command failed"; exit 1; }
@@ -113,7 +122,7 @@ fi
 #
 echo -e "\n##### Running ${SPLITTERJAR}... #####"
 rm -f ${MAPID}*.pbf areas.* densities-out.txt template.args
-java -Xmx8192M -jar $SPLITTERJAR --precomp-sea=$SEA  --mapid=${MAPID}0001 "$(pwd)/${REGION}.osm.pbf"
+java -Xmx8192M -jar $SPLITTERJAR --precomp-sea=$SEA  --mapid=${MAPID}0001 "$(pwd)/${REGION}.osm.pbf" || exit 1
 DATA="$(pwd)/${MAPID}*.pbf"
 
 popd > /dev/null
@@ -126,7 +135,7 @@ STYLEFILE="$(pwd)/style/opentopomap"
 #
 echo -e "\n##### Generating opentopomap.typ... #####"
 pushd style/typ > /dev/null
-java -jar $MKGMAPJAR --family-id=35 opentopomap.txt
+java -jar $MKGMAPJAR --family-id=35 opentopomap.txt || exit 1
 TYPFILE="$(pwd)/opentopomap.typ"
 popd > /dev/null
 
@@ -138,8 +147,9 @@ rm -rf ./output_tmp
 java -Xmx8192M -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
     --precomp-sea=$SEA \
     --dem=./dem1/all \
-    --output-dir=output_tmp --bounds=$BOUNDS $DATA $TYPFILE
+    --output-dir=output_tmp --bounds=$BOUNDS $DATA $TYPFILE || exit 1
 
 echo -e "\nDone! Generated map will be saved as output/otm-${REGION}.img"
 mkdir -p output
-mv output_tmp/gmapsupp.img output/otm-${REGION}.img
+mv output_tmp/gmapsupp.img output/otm-${REGION}.img || exit 1
+
