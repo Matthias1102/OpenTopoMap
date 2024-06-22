@@ -147,7 +147,7 @@ rm -rf ./output_tmp
 java -Xmx8192M -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
     --precomp-sea=$SEA \
     --dem=./dem1/all \
-    --output-dir=output_tmp --bounds=$BOUNDS $DATA $TYPFILE || exit 1
+    --output-dir=output_tmp --bounds=$BOUNDS $DATA $TYPFILE
 
 echo -e "\nDone! Generated map will be saved as output/otm-${REGION}.img"
 mkdir -p output
