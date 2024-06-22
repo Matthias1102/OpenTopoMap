@@ -1,7 +1,12 @@
 #!/bin/bash
 
+#
 # Create a Garmin map for the regions mentioned below.
 #
+
+# Change to the folder where the script is located
+cd $(dirname $0) || exit 1
+
 ./create_map.sh https://download.geofabrik.de/europe/germany-latest.osm.pbf 4900  || exit 1
 ./create_map.sh https://download.geofabrik.de/europe/united-kingdom-latest.osm.pbf 4400  || exit 1
 ./create_map.sh https://download.geofabrik.de/europe/france-latest.osm.pbf 3300  || exit 1
