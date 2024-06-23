@@ -44,15 +44,6 @@ cd $(dirname $0) || { echo "cd command failed"; exit 1; }
 source setup_vars.bash
 
 #
-# Check whether files with height information have been downloaded.
-#
-if [[ "$(ls ../dem1/all/*.hgt | wc -l)" -ne 1048 ]]; then
-    echo "Files with height information are missing. Please run this command first:"
-    echo "./download_viewfinderpanoramas.sh"
-    exit 1
-fi
-
-#
 # Download required tools
 #
 echo -e "\n##### Download required tools #####"
@@ -61,8 +52,30 @@ echo -e "\n##### Download required tools #####"
 # Go to the OpenTopoMap/garmin folder.
 cd .. || { echo "cd command failed"; exit 1; }
 
+#
+# Set several variables
+#
 MKGMAPJAR="$(pwd)/tools/${MKGMAP}/mkgmap.jar"
 SPLITTERJAR="$(pwd)/tools/${SPLITTER}/splitter.jar"
+
+TOP_DIR="$(pwd)"
+DOWNLOAD_DIR="$(pwd)/download_geofabrik"
+SPLITTER_OUT_DIR="$(pwd)/splitter_out"
+MKGMAP_WORK_DIR="$(pwd)/mkgmap_work"
+OUTPUT_DIR="$(pwd)/output"
+TYP_DIR="$(pwd)/style/typ"
+DEM_DIR="$(pwd)/dem1"
+OPENTOPOMAP_OPTIONS="$(pwd)/opentopomap_options"
+STYLEFILE="$(pwd)/style/opentopomap"
+
+#
+# Check whether files with height information have been downloaded.
+#
+if [[ "$(ls ${DEM_DIR}/all/*.hgt | wc -l)" -ne 1048 ]]; then
+    echo "Files with height information are missing. Please run this command first:"
+    echo "./download_viewfinderpanoramas.sh"
+    exit 1
+fi
 
 #
 # Download bounds
@@ -103,8 +116,8 @@ fi
 # Fetch map data
 #
 echo -e "\n##### Fetch map data #####"
-mkdir -p data
-pushd data > /dev/null
+mkdir -p "${DOWNLOAD_DIR}" 
+cd "${DOWNLOAD_DIR}" || exit 1
 
 if stat --printf='' ${REGION}.osm.pbf 2> /dev/null; then
     echo "${REGION}.osm.pbf already downloaded"
@@ -121,35 +134,31 @@ fi
 # Run splitter
 #
 echo -e "\n##### Running ${SPLITTERJAR}... #####"
+mkdir -p "${SPLITTER_OUT_DIR}" 
+cd "${SPLITTER_OUT_DIR}" || exit 1
 rm -f ${MAPID}*.pbf areas.* densities-out.txt template.args
-java -Xmx8192M -jar $SPLITTERJAR --precomp-sea=$SEA  --mapid=${MAPID}0001 "$(pwd)/${REGION}.osm.pbf" || exit 1
-DATA="$(pwd)/${MAPID}*.pbf"
-
-popd > /dev/null
-
-OPTIONS="$(pwd)/opentopomap_options"
-STYLEFILE="$(pwd)/style/opentopomap"
+java -Xmx8192M -jar $SPLITTERJAR --precomp-sea=$SEA  --mapid=${MAPID}0001 "${DOWNLOAD_DIR}/${REGION}.osm.pbf" || exit 1
+SPLIT_DATA="$(pwd)/${MAPID}*.pbf"
 
 #
 # Generate opentopomap.typ
 #
 echo -e "\n##### Generating opentopomap.typ... #####"
-pushd style/typ > /dev/null
+cd ${TYP_DIR} || exit 1
 java -jar $MKGMAPJAR --family-id=35 opentopomap.txt || exit 1
 TYPFILE="$(pwd)/opentopomap.typ"
-popd > /dev/null
 
 #
 # Run mkgmap
 #
 echo -e "\n##### Running ${MKGMAPJAR}... #####"
-rm -rf ./output_tmp
-java -Xmx8192M -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
+cd ${TOP_DIR}
+rm -rf ${MKGMAP_WORK_DIR}
+java -Xmx8192M -jar $MKGMAPJAR -c $OPENTOPOMAP_OPTIONS --style-file=${STYLEFILE} \
     --precomp-sea=$SEA \
-    --dem=./dem1/all \
-    --output-dir=output_tmp --bounds=$BOUNDS $DATA $TYPFILE
+    --dem=${DEM_DIR}/all \
+    --output-dir=${MKGMAP_WORK_DIR} --bounds=$BOUNDS $SPLIT_DATA $TYPFILE
 
-echo -e "\nDone! Generated map will be saved as output/otm-${REGION}.img"
-mkdir -p output
-mv output_tmp/gmapsupp.img output/otm-${REGION}.img || exit 1
-
+echo -e "\nDone! Generated map will be saved as\n${OUTPUT_DIR}/otm-${REGION}.img"
+mkdir -p "${OUTPUT_DIR}"
+mv ${MKGMAP_WORK_DIR}/gmapsupp.img "${OUTPUT_DIR}/otm-${REGION}.img" || exit 1
