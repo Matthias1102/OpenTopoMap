@@ -57,7 +57,10 @@ create_map.sh https://download.geofabrik.de/europe/germany-latest.osm.pbf 4900
 To create the map, this script does the following:
 
 - Download bounds and sea from http://osm.thkukuk.de/data
-- Fetch map data from https://download.geofabrik.de/
+- Fetch OSM map data from https://download.geofabrik.de/.
+  This step is skipped if the data for the region is already available in the `download_geofabrik` folder.
+  To create a map with the latest OSM data, you have to remove the `.osm.pbf` file for the region in the
+  `download_geofabrik` folder.
 - Run splitter
 - Generate opentopomap.typ
 - Run mkgmap
