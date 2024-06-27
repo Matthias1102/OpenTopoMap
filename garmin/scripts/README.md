@@ -7,12 +7,12 @@ This approach is based on the instructions
 
 The script [`download_tools.sh`](./download_tools.sh) creates the `tools` folder and downloads the required tools:
 
-| Tool                                                     | Release notes and download URL                                                |
-| -------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| [mkgmap](https://www.mkgmap.org.uk/doc/index.html)       | [Release notes](https://www.mkgmap.org.uk/download/mkgmap.html)               |
-| [splitter](https://www.mkgmap.org.uk/doc/splitter.html)  | [Release notes](https://www.mkgmap.org.uk/download/splitter.html)             |
-| [Srtm2Osm](https://wiki.openstreetmap.org/wiki/Srtm2Osm) | [Release notes](https://wiki.openstreetmap.org/wiki/Srtm2Osm#Download)        |
-| [Osmosis](https://wiki.openstreetmap.org/wiki/Osmosis)   | [Release notes](https://github.com/openstreetmap/osmosis/releases/tag/0.49.2) |
+| Tool                                                     | Release notes and download URL                                         |
+| -------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [mkgmap](https://www.mkgmap.org.uk/doc/index.html)       | [Release notes](https://www.mkgmap.org.uk/download/mkgmap.html)        |
+| [splitter](https://www.mkgmap.org.uk/doc/splitter.html)  | [Release notes](https://www.mkgmap.org.uk/download/splitter.html)      |
+| [Srtm2Osm](https://wiki.openstreetmap.org/wiki/Srtm2Osm) | [Release notes](https://wiki.openstreetmap.org/wiki/Srtm2Osm#Download) |
+| [Osmosis](https://wiki.openstreetmap.org/wiki/Osmosis)   | [Release notes](https://github.com/openstreetmap/osmosis/releases)     |
 
 Before you can use the download script, edit your local copy of the file
 [setup_vars.bash](https://github.com/Matthias1102/GarminContourMap/blob/main/setup_vars.bash)
