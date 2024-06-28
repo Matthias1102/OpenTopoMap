@@ -62,9 +62,9 @@ To create the map, this script does the following:
   To create a map with the latest OSM data, you have to remove the `.osm.pbf` file for the region in the
   `download_geofabrik` folder.
 - Run splitter
-- Generate opentopomap.typ
+- Generate `opentopomap.typ`
 - Run mkgmap
-- Copy the final map image to the `output` folder
+- Move the final map image to the `output` folder
 
 ## Create all maps
 
