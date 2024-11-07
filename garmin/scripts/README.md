@@ -5,7 +5,7 @@ This approach is based on the instructions
 
 ## Download Tools
 
-The script [`download_tools.sh`](./download_tools.sh) creates the `tools` folder and downloads the required tools:
+The script [`download_tools.sh`](./download_tools.sh) creates the `../tools` folder and downloads the required tools:
 
 | Tool                                                     | Release notes and download URL                                         |
 | -------------------------------------------------------- | ---------------------------------------------------------------------- |
@@ -15,7 +15,7 @@ The script [`download_tools.sh`](./download_tools.sh) creates the `tools` folder
 | [Osmosis](https://wiki.openstreetmap.org/wiki/Osmosis)   | [Release notes](https://github.com/openstreetmap/osmosis/releases)     |
 
 Before you can use the download script, edit your local copy of the file
-[setup_vars.bash](https://github.com/Matthias1102/GarminContourMap/blob/main/setup_vars.bash)
+[setup_vars.bash](https://github.com/Matthias1102/OpenTopoMap/blob/Matthias1102/garmin/scripts/setup_vars.bash)
 and adjust the version info for all tools according to the Release Note pages listed in the table above.
 
 ## Download *.hgt files from [viewfinderpanoramas.org](https://viewfinderpanoramas.org/)
