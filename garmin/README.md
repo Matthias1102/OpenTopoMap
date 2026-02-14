@@ -70,7 +70,11 @@ mkdir data
 pushd data > /dev/null
 
 rm -f morocco-latest.osm.pbf
-wget "https://download.geofabrik.de/africa/morocco-latest.osm.pbf"
+wget "https://download.geofabrik.de/europe/germany-latest.osm.pbf"
+wget "https://download.geofabrik.de/europe/france-latest.osm.pbf"
+wget "https://download.geofabrik.de/europe/italy-latest.osm.pbf"
+wget "https://download.geofabrik.de/europe/switzerland-latest.osm.pbf"
+wget "https://download.geofabrik.de/europe/austria-latest.osm.pbf"
 
 rm -f 6324*.pbf areas.* densities-out.txt template.args
 java -jar $SPLITTERJAR --precomp-sea=$SEA "$(pwd)/morocco-latest.osm.pbf"
